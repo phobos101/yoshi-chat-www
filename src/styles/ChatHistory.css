@@ -4,6 +4,10 @@
     margin-right: 15px;
 }
 
+.collection .collection-item:not(:first-child) {
+    margin-top: 10px;
+}
+
 .message-date {
     color: #585858;
 }

@@ -1,11 +1,15 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import logo from './logo.svg';
 import '../styles/App.css';
 
 import ChatInput from '../components/ChatInput'
 import ChatHistory from '../components/ChatHistory'
 
-class App extends Component {
+class App extends React.Component {
+    static propTypes = {
+        history: React.PropTypes.array,
+        userID: React.PropTypes.number
+    }
 
     state = {
         userID: Math.round(Math.random() * 1000000).toString(),
@@ -13,7 +17,25 @@ class App extends Component {
     }
 
     sendMessage = (message) => {
-        console.log('sendMessage', message)
+        this.PubNub.publish({
+            channel: 'Yoshi-lobby',
+            message: message
+        })
+    }
+
+    componentDidMount() {
+        this.PubNub = window.PUBNUB.init({
+            publish_key: 'pub-c-033a1f9f-1a10-4a80-aa41-42e47f2dacbb',
+            subscribe_key: 'sub-c-cef27eee-be48-11e6-91e2-02ee2ddab7fe',
+            ssl: (location.protocol.toLowerCase() === 'https')
+        })
+
+        this.PubNub.subscribe({
+            channel: 'Yoshi-lobby',
+            message: (message) => this.setState({
+                history: this.state.history.concat(message)
+            })
+        })
     }
 
     render() {

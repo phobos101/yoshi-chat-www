@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import * as React from 'react';
 import '../styles/ChatInput.css';
 
-export default class ChatInput extends Component {
+export default class ChatInput extends React.Component {
     static propTypes = {
-        userID: PropTypes.string,
-        sendMessage: PropTypes.func
+        userID: React.PropTypes.string,
+        sendMessage: React.PropTypes.func
     }
 
     componentDidMount() {
@@ -27,12 +27,11 @@ export default class ChatInput extends Component {
 
         this.refs.txtMessage.value = ''
         this.refs.txtMessage.focus()
-
     }
 
     render() {
         const { props, onSubmit } = this
-        const imgURL = '//robohash.org/' + props.userID + '?set=set2&bgset=bg2&size=70x70'
+        const imgURL = `//robohash.org/${props.userID}?set=set2&bgset=bg2&size=70x70`
         return (
             <footer className="teal">
                 <form className="container" onSubmit={ onSubmit }>

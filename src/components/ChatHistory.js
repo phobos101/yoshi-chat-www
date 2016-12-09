@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import * as React from 'react';
 import '../styles/ChatHistory.css';
 
-export default class ChatHistory extends Component {
+export default class ChatHistory extends React.Component {
     static propTypes = {
-        history: PropTypes.array
+        history: React.PropTypes.array
     }
 
     render() {
