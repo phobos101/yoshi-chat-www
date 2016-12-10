@@ -23,6 +23,10 @@ function _getMiddleware() {
 
 function _getEnhancers() {
     let enhancers = []
+
+    if (window.devToolsExtension) {
+        enhancers = [...enhancers, window.devToolsExtension()]
+    }
     return enhancers
 }
 

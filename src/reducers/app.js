@@ -11,9 +11,7 @@ export default function appReducer(state = INITIAL_STATE, action = {}) {
         case SET_CURRENT_USERID:
             return state.update('userID', () => action.payload)
         case ADD_MESSAGE:
-            return state.update('messages', (messages) => {
-                messages.concat(action.payload)
-            })
+            return state.update('messages', (messages) => messages.concat(action.payload))
         default:
             return state
     }
