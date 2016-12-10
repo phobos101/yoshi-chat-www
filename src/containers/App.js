@@ -27,7 +27,7 @@ class App extends React.Component {
         this.PubNub = window.PUBNUB.init({
             publish_key: 'pub-c-033a1f9f-1a10-4a80-aa41-42e47f2dacbb',
             subscribe_key: 'sub-c-cef27eee-be48-11e6-91e2-02ee2ddab7fe',
-            ssl: (location.protocol.toLowerCase() === 'https')
+            ssl: (window.location.protocol.toLocaleLowerCase().indexOf('https') !== -1)
         })
 
         this.PubNub.subscribe({
