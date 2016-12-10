@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { setCurrentUserID, addMessage } from '../actions'
+import { setCurrentUserID, addMessage, addHistory } from '../actions'
 
 import ChatInput from '../components/ChatInput'
 import ChatHistory from '../components/ChatHistory'
@@ -11,14 +11,16 @@ import '../styles/App.css'
 function mapStateToProps(state) {
     return {
         history: state.app.get('messages').toJS(),
-        userID: state.app.get('userID')
+        userID: state.app.get('userID'),
+        lastMessageTimestamp: state.app.get('lastMessageTimestamp')
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         addMessage: (message) => dispatch(addMessage(message)),
-        setUserId: (userID) => dispatch(setCurrentUserID(userID))
+        setUserId: (userID) => dispatch(setCurrentUserID(userID)),
+        addHistory: (messages, timestamp) => dispatch(addHistory(messages, timestamp))
     }
 }
 
@@ -27,7 +29,9 @@ class App extends Component {
         history: PropTypes.array,
         userID: PropTypes.number,
         addMessage: PropTypes.func,
-        setUserId: PropTypes.func
+        setUserId: PropTypes.func,
+        addHistory: PropTypes.func,
+        lastMessageTimestamp: PropTypes.string
     }
 
     componentDidMount() {
@@ -44,12 +48,27 @@ class App extends Component {
             channel: 'Yoshi-lobby',
             message: this.props.addMessage
         })
+
+        this.fetchHistory()
     }
 
     sendMessage = (message) => {
         this.PubNub.publish({
             channel: 'Yoshi-lobby',
             message: message
+        })
+    }
+
+    fetchHistory = () => {
+        const { props } = this
+
+        this.PubNub.history({
+            channel: 'Yoshi-lobby',
+            count: 10,
+            start: props.lastMessageTimestamp,
+            callback: (data) => {
+                props.addHistory(data[0], data[1])
+            }
         })
     }
 

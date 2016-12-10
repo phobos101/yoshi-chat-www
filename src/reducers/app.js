@@ -1,17 +1,24 @@
-import { ADD_MESSAGE, SET_CURRENT_USERID } from '../constants'
+import { ADD_MESSAGE, SET_CURRENT_USERID, ADD_HISTORY } from '../constants'
 import { fromJS } from 'immutable'
 
 const INITIAL_STATE = fromJS({
     userID: 0,
-    messages: []
+    messages: [],
+    lastMessageTimestamp: null
 })
 
 export default function appReducer(state = INITIAL_STATE, action = {}) {
     switch (action.type) {
         case SET_CURRENT_USERID:
-            return state.update('userID', () => action.payload)
+            return state
+                .update('userID', () => action.payload)
         case ADD_MESSAGE:
-            return state.update('messages', (messages) => messages.concat(action.payload))
+            return state
+                .update('messages', (messages) => messages.concat(action.payload))
+        case ADD_HISTORY:
+            return state
+                .update('messages', (messages) => messages.unshift(...action.payload.messages))
+                .update('lastMessageTimestamp', () => action.payload.timestamp)
         default:
             return state
     }
