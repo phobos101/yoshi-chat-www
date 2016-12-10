@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React, { Component, PropTypes } from 'react';
 import '../styles/ChatHistory.css';
 
-export default class ChatHistory extends React.Component {
+export default class ChatHistory extends Component {
     static propTypes = {
-        history: React.PropTypes.array
+        history: PropTypes.array
     }
 
     render() {
@@ -15,11 +15,11 @@ export default class ChatHistory extends React.Component {
                 { props.history.map((messageObj) => {
                     const imgURL = `//robohash.org/${messageObj.Who}?set=set2&bgset=bg2&size=70x70`
                     const messageDate = new Date(messageObj.When)
-                    const messageDateTime = messageDate.toLocaleDateString() + 'at' + messageDate.toLocaleTimeString()
+                    const messageDateTime = messageDate.toLocaleDateString() + ' at ' + messageDate.toLocaleTimeString()
 
                     return (
                         <li className="collection-item avatar" key={ messageObj.When }>
-                            {/*<img src={ imgURL} alt="{ messageObj.Who } className="circle" />*/}
+                            <img src={ imgURL } alt="{ messageObj.Who }" className="circle" />
                             <span className="title">Anonymous robot #{ messageObj.Who }</span>
                             <p>
                                 <i className="prefix mdi-action-alarm" />

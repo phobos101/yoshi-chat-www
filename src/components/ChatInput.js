@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React, { Component, PropTypes } from 'react';
 import '../styles/ChatInput.css';
 
-export default class ChatInput extends React.Component {
+export default class ChatInput extends Component {
     static propTypes = {
-        userID: React.PropTypes.string,
-        sendMessage: React.PropTypes.func
+        userID: PropTypes.number,
+        sendMessage: PropTypes.func
     }
 
     componentDidMount() {
@@ -40,7 +40,7 @@ export default class ChatInput extends React.Component {
                             <i className="prefix mdi-communication-chat" />
                             <input ref="txtMessage" type="text" placeholder="Type your message" />
                             <span className="chip left">
-                                {/* <img src={ imgURL } /> */}
+                                <img src={ imgURL } role="presentation"/>
                                 <span>Anonymous robot #{ props.userID }</span>
                             </span>
                         </div>

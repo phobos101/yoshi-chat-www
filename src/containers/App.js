@@ -1,19 +1,49 @@
-import * as React from 'react';
-import logo from './logo.svg';
-import '../styles/App.css';
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { setCurrentUserID, addMessage } from '../actions'
 
 import ChatInput from '../components/ChatInput'
 import ChatHistory from '../components/ChatHistory'
 
-class App extends React.Component {
+import logo from './logo.svg'
+import '../styles/App.css'
+
+function mapStateToProps(state) {
+    return {
+        history: state.app.get('messages').toJS(),
+        userID: state.app.get('userID')
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        addMessage: (message) => dispatch(addMessage(message)),
+        setUserId: (userID) => dispatch(setCurrentUserID(userID))
+    }
+}
+
+class App extends Component {
     static propTypes = {
-        history: React.PropTypes.array,
-        userID: React.PropTypes.number
+        history: PropTypes.array,
+        userID: PropTypes.number,
+        addMessage: PropTypes.func,
+        setUserId: PropTypes.func
     }
 
-    state = {
-        userID: Math.round(Math.random() * 1000000).toString(),
-        history: []
+    componentDidMount() {
+        const ID = Math.round(Math.random() * 1000000)
+        this.props.setUserId(ID)
+
+        this.PubNub = window.PUBNUB.init({
+            publish_key: 'pub-c-033a1f9f-1a10-4a80-aa41-42e47f2dacbb',
+            subscribe_key: 'sub-c-cef27eee-be48-11e6-91e2-02ee2ddab7fe',
+            ssl: (window.location.protocol.toLocaleLowerCase().indexOf('https') !== -1)
+        })
+
+        this.PubNub.subscribe({
+            channel: 'Yoshi-lobby',
+            message: this.props.addMessage
+        })
     }
 
     sendMessage = (message) => {
@@ -23,23 +53,8 @@ class App extends React.Component {
         })
     }
 
-    componentDidMount() {
-        this.PubNub = window.PUBNUB.init({
-            publish_key: 'pub-c-033a1f9f-1a10-4a80-aa41-42e47f2dacbb',
-            subscribe_key: 'sub-c-cef27eee-be48-11e6-91e2-02ee2ddab7fe',
-            ssl: (window.location.protocol.toLocaleLowerCase().indexOf('https') !== -1)
-        })
-
-        this.PubNub.subscribe({
-            channel: 'Yoshi-lobby',
-            message: (message) => this.setState({
-                history: this.state.history.concat(message)
-            })
-        })
-    }
-
     render() {
-        const { sendMessage, state } = this
+        const { sendMessage, props } = this
         return (
             <div className="App">
                 <header className="App-header">
@@ -48,12 +63,15 @@ class App extends React.Component {
                 </header>
 
                 <div>
-                    <ChatHistory history={ state.history } />
-                    <ChatInput userID={ state.userID } sendMessage={ sendMessage } />
+                    <ChatHistory history={ props.history } />
+                    <ChatInput userID={ props.userID } sendMessage={ sendMessage } />
                 </div>
             </div>
         );
     }
 }
 
-export default App;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App);
