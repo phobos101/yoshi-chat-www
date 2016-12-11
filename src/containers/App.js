@@ -10,6 +10,7 @@ import {
 
 import ChatInput from '../components/ChatInput'
 import ChatHistory from '../components/ChatHistory'
+import ChatUsers from '../components/ChatUsers'
 
 function mapStateToProps(state) {
     return {
@@ -110,7 +111,8 @@ class App extends Component {
     render() {
         const { props, sendMessage, fetchHistory } = this
         return (
-            <div>
+            <div className="message-container">
+                <ChatUsers users={ props.users } />
                 <ChatHistory history={ props.history } fetchHistory={ fetchHistory } />
                 <ChatInput userID={ props.userID } sendMessage={ sendMessage } />
             </div>

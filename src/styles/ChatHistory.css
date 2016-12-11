@@ -1,13 +1,10 @@
-.collection {
-    margin: 0 0 130px 0;
-    overflow-y: scroll;
-    height: 80vh;
+.message-list {
+    flex: 1;
+    overflow: auto;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-.message-date {
-    color: #585858;
-}
-
-body {
-    background: #EEEEEE;
+.collection .collection-item:last-child {
+    border-bottom: 0.1em solid #DCDCDC;
 }
