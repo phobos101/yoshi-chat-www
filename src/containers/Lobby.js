@@ -111,7 +111,7 @@ class Lobby extends Component {
     render() {
         const { props, sendMessage, fetchHistory } = this
         return (
-            <div className="message-container">
+            <div className="lobby-container">
                 <ChatUsers users={ props.users } />
                 <ChatHistory history={ props.history } fetchHistory={ fetchHistory } />
                 <ChatInput userID={ props.userID } sendMessage={ sendMessage } />
@@ -123,4 +123,4 @@ class Lobby extends Component {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Lobby);
+)(Lobby)

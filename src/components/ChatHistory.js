@@ -63,7 +63,7 @@ export default class ChatHistory extends Component {
                     return (
                         <li className="collection-item message-item avatar" key={ messageObj.When }>
                             <img src={ imgURL } alt="{ messageObj.Who }" className="circle" />
-                            <span className="title">Anonymous robot #{ messageObj.Who }</span>
+                            <span className="title">Anonymous #{ messageObj.Who }</span>
                             <p>
                                 <i className="prefix mdi-action-alarm" />
                                 <span className="message-date">{ messageDateTime }</span>

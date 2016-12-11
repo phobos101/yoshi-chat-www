@@ -41,7 +41,7 @@ export default class ChatInput extends Component {
                             <input ref="txtMessage" type="text" placeholder="Type your message" />
                             <span className="chip left">
                                 <img src={ imgURL } role="presentation"/>
-                                <span>Anonymous robot #{ props.userID }</span>
+                                <span>Anonymous #{ props.userID }</span>
                             </span>
                         </div>
                         <div className="input-field col s2">
