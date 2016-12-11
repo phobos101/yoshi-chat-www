@@ -14,10 +14,10 @@ import ChatUsers from '../components/ChatUsers'
 
 function mapStateToProps(state) {
     return {
-        history: state.app.get('messages').toJS(),
-        userID: state.app.get('userID'),
-        lastMessageTimestamp: state.app.get('lastMessageTimestamp'),
-        users: state.app.get('users').toJS()
+        history: state.lobby.get('messages').toJS(),
+        userID: state.lobby.get('userID'),
+        lastMessageTimestamp: state.lobby.get('lastMessageTimestamp'),
+        users: state.lobby.get('users').toJS()
     }
 }
 
@@ -31,7 +31,7 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-class App extends Component {
+class Lobby extends Component {
     static propTypes = {
         history: PropTypes.array,
         userID: PropTypes.number,
@@ -123,4 +123,4 @@ class App extends Component {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(App);
+)(Lobby);

@@ -15,7 +15,7 @@ const INITIAL_STATE = fromJS({
     users: []
 })
 
-export default function appReducer(state = INITIAL_STATE, action = {}) {
+export default function lobbyReducer(state = INITIAL_STATE, action = {}) {
     switch (action.type) {
 
         case SET_CURRENT_USERID:
