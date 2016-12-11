@@ -1,6 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { setCurrentUserID, addMessage, addHistory } from '../actions'
+import {
+    setCurrentUserID,
+    addMessage,
+    addHistory,
+    addUser,
+    removeUser
+} from '../actions'
 
 import ChatInput from '../components/ChatInput'
 import ChatHistory from '../components/ChatHistory'
@@ -9,7 +15,8 @@ function mapStateToProps(state) {
     return {
         history: state.app.get('messages').toJS(),
         userID: state.app.get('userID'),
-        lastMessageTimestamp: state.app.get('lastMessageTimestamp')
+        lastMessageTimestamp: state.app.get('lastMessageTimestamp'),
+        users: state.app.get('users').toJS()
     }
 }
 
@@ -17,7 +24,9 @@ function mapDispatchToProps(dispatch) {
     return {
         addMessage: (message) => dispatch(addMessage(message)),
         setUserId: (userID) => dispatch(setCurrentUserID(userID)),
-        addHistory: (messages, timestamp) => dispatch(addHistory(messages, timestamp))
+        addHistory: (messages, timestamp) => dispatch(addHistory(messages, timestamp)),
+        addUser: (userID) => dispatch(addUser(userID)),
+        removeUser: (userID) => dispatch(removeUser(userID))
     }
 }
 
@@ -28,7 +37,10 @@ class App extends Component {
         addMessage: PropTypes.func,
         setUserId: PropTypes.func,
         addHistory: PropTypes.func,
-        lastMessageTimestamp: PropTypes.string
+        lastMessageTimestamp: PropTypes.string,
+        users: PropTypes.array,
+        addUser: PropTypes.func,
+        removeUser: PropTypes.func
     }
 
     componentDidMount() {
@@ -38,15 +50,27 @@ class App extends Component {
         this.PubNub = window.PUBNUB.init({
             publish_key: 'pub-c-033a1f9f-1a10-4a80-aa41-42e47f2dacbb',
             subscribe_key: 'sub-c-cef27eee-be48-11e6-91e2-02ee2ddab7fe',
-            ssl: (window.location.protocol.toLowerCase().indexOf('https') !== -1)
+            ssl: (window.location.protocol.toLowerCase().indexOf('https') !== -1),
+            uuid: ID
         })
 
         this.PubNub.subscribe({
             channel: 'Yoshi-lobby',
-            message: this.props.addMessage
+            message: this.props.addMessage,
+            presence: this.onPresenceChange
         })
 
         this.fetchHistory()
+
+        window.addEventListener('beforeunload', this.leaveChat)
+    }
+
+    componentWillUnmount() {
+        this.leaveChat()
+    }
+
+    leaveChat = () => {
+        this.PubNub.unsubscribe({ channel: 'Yoshi-lobby' })
     }
 
     sendMessage = (message) => {
@@ -67,6 +91,20 @@ class App extends Component {
                 props.addHistory(data[0], data[1])
             }
         })
+    }
+
+    onPresenceChange = (presenceData) => {
+        switch (presenceData.action) {
+            case 'join':
+                this.props.addUser(presenceData.uuid)
+                break
+            case 'leave':
+            case 'timeout':
+                this.props.removeUser(presenceData.uuid)
+                break
+            default:
+                console.error(`Unknown action: ${presenceData.action}`)
+        }
     }
 
     render() {
