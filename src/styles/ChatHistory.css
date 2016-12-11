@@ -5,6 +5,8 @@
     margin-bottom: 0;
 }
 
+.message-list::-webkit-scrollbar { display: none; }
+
 .collection .collection-item:last-child {
     border-bottom: 0.1em solid #DCDCDC;
 }
