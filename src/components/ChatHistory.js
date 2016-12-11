@@ -8,41 +8,36 @@ export default class ChatHistory extends Component {
         fetchHistory: PropTypes.func
     }
 
-    static scrollAtBottom = true
+    constructor() {
+        super()
+        this.state = { scrollAtBottom: true }
+    }
 
     componentWillUpdate(nextProps) {
         this.historyChanged = nextProps.history.length !== this.props.history.length
-        if (this.historyChanged) {
-            const { messageList } = this.refs
-            const scrollPos = messageList.scrollTop
-            const scrollBottom = (messageList.scrollHeight - messageList.clientHeight)
-            this.scrollAtBottom = (scrollBottom <= 0) || (scrollPos === scrollBottom)
-
-            if (!this.scrollAtBottom) {
-                const numMessages = messageList.childNodes.length
-                this.topMessage = numMessages === 0 ? null : messageList.childNodes[0]
-            }
-        }
     }
 
     componentDidUpdate() {
-        if (this.historyChanged) {
-            if (this.scrollAtBottom) {
-                this.scrollToBottom()
-            }
-            if (this.topMessage) {
-                ReactDOM.findDOMNode(this.topMessage).scrollIntoView()
-            }
+        if (this.historyChanged && this.state.scrollAtBottom) {
+            this.scrollToBottom()
         }
     }
 
     onScroll = () => {
         const { refs, props } = this
         const scrollTop = refs.messageList.scrollTop
+        const scrollBase = scrollTop - (refs.messageList.scrollHeight - refs.messageList.clientHeight)
+
+        if (scrollBase === 0) {
+            this.setState({ scrollAtBottom: true })
+        } else {
+            this.setState({ scrollAtBottom: false })
+        }
 
         if (scrollTop === 0) {
             props.fetchHistory()
         }
+
     }
 
     scrollToBottom = () => {
