@@ -4,6 +4,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
 import configureStore from './configure-store'
 
+import App from '../containers/App'
 import Lobby from '../containers/Lobby'
 import Profile from '../containers/Profile'
 
@@ -13,7 +14,7 @@ const history = syncHistoryWithStore(browserHistory, store)
 export default (
     <Provider store={ store }>
         <Router history={ history }>
-            <Route path="/" component={ Lobby } />
+            <Route path="/" component={ App } />
             <Route path="/profile" component={ Profile } />
         </Router>
     </Provider>

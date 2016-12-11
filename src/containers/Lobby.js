@@ -12,6 +12,8 @@ import ChatInput from '../components/ChatInput'
 import ChatHistory from '../components/ChatHistory'
 import ChatUsers from '../components/ChatUsers'
 
+import '../styles/lobby.css'
+
 function mapStateToProps(state) {
     return {
         history: state.lobby.get('messages').toJS(),
