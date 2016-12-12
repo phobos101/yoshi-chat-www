@@ -73,7 +73,10 @@ class Lobby extends Component {
     }
 
     leaveChat = () => {
-        this.PubNub.unsubscribe({ channel: 'Yoshi-lobby' })
+        this.PubNub.unsubscribe({
+            channel: 'Yoshi-lobby',
+            presence: this.onPresenceChange
+        })
     }
 
     sendMessage = (message) => {

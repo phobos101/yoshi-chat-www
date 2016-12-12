@@ -3,7 +3,8 @@ import {
     SET_CURRENT_USERID,
     ADD_HISTORY,
     ADD_USER,
-    REMOVE_USER
+    REMOVE_USER,
+    GET_PROFILE
 } from '../constants'
 
 export function setCurrentUserID(userID) {
@@ -40,5 +41,13 @@ export function removeUser(userID) {
     return {
         type: REMOVE_USER,
         payload: userID
+    }
+}
+
+export function getProfile(token) {
+    console.log('Get profile called with', token)
+    return {
+        type: GET_PROFILE,
+        payload: {name: 'Test Dude'}
     }
 }

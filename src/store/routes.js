@@ -5,7 +5,6 @@ import { Provider } from 'react-redux'
 import configureStore from './configure-store'
 
 import App from '../containers/App'
-import Lobby from '../containers/Lobby'
 import Profile from '../containers/Profile'
 
 const store = configureStore({})
