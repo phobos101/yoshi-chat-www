@@ -28,6 +28,11 @@ class App extends Component {
                         <div className="col s12 center">
                              <span data-yoti-application-id={ this.appId }></span>  
                         </div>
+
+                        <script>
+                            _ybg.config.service = 'https://www.yoti.com/connect/'
+                            _ybg.init()
+                        </script>
                     </div>
 
                     <div className="col s7">
