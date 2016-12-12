@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import Lobby from './Lobby'
 import '../styles/app.css'
 
@@ -23,10 +24,7 @@ class App extends Component {
                         <div className="col s12 valign center">
                             <h3>Yoshi Chat</h3>
                             <h3>Demo lobby --></h3>
-                        </div>
-
-                        <div className="col s12 center">
-                             <span data-yoti-application-id={ this.appId }></span>  
+                            <span data-yoti-application-id={ this.appId }></span>
                         </div>
 
                         <script>
