@@ -8,7 +8,7 @@ export default class YotiButton extends Component {
         axios.get('https://yoshi-chat.herokuapp.com/api/appId')
             .then((res) => {
                 let btn = ReactDOM.findDOMNode(this.refs.yotiBtn);
-                btn.setAttribute('data-yoti-application-id', res.appId);
+                btn.setAttribute('data-yoti-application-id', res.data.appId);
                 window._ybg.config.service = 'https://www.yoti.com/connect/'
                 window._ybg.init()
             })
