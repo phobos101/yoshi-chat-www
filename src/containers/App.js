@@ -1,19 +1,9 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import Lobby from './Lobby'
+import YotiButton from '../components/YotiButton'
 import '../styles/app.css'
 
 class App extends Component {
-
-    componentDidMount() {
-        axios.get('https://yoshi-chat.herokuapp.com/api/appId')
-            .then((res) => {
-                this.appId = res.appId
-            })
-            .catch((err) => {
-                console.warn('Unable to get appId', err)
-            })
-    }
 
     render() {
         return (
@@ -24,13 +14,8 @@ class App extends Component {
                         <div className="col s12 valign center">
                             <h3>Yoshi Chat</h3>
                             <h3>Demo lobby --></h3>
-                            <span data-yoti-application-id={ this.appId }></span>
+                            <YotiButton />
                         </div>
-
-                        <script>
-                            _ybg.config.service = 'https://www.yoti.com/connect/'
-                            _ybg.init()
-                        </script>
                     </div>
 
                     <div className="col s7">
