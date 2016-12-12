@@ -41,12 +41,10 @@ class Profile extends Component {
                     })
             }
         }
-
-         this.props.setProfile({name: 'the guy'})
     }
 
     render() {
-        const isLoggedIn = window.sessionStorage.profile
+        const isLoggedIn = !!window.sessionStorage.profile
         return (
             <div>
                 { isLoggedIn &&
