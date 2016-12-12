@@ -9,20 +9,19 @@ export default class YotiButton extends Component {
             .then((res) => {
                 let btn = ReactDOM.findDOMNode(this.refs.yotiBtn);
                 btn.setAttribute('data-yoti-application-id', res.appId);
+                window._ybg.config.service = 'https://www.yoti.com/connect/'
+                window._ybg.init()
             })
             .catch((err) => {
                 console.warn('Unable to get appId', err)
             })
+
     }
 
     render() {
         return (
             <div>
                 <span ref="yotiBtn"></span>
-                <script>
-                    _ybg.config.service = 'https://www.yoti.com/connect/'
-                    _ybg.init()
-                </script>
             </div>
         )
     }
