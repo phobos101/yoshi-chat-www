@@ -1,15 +1,15 @@
-import { GET_PROFILE } from '../constants'
+import { SET_PROFILE } from '../constants'
 import { fromJS } from 'immutable'
 
 const INITIAL_STATE = fromJS({
-    profile: {}
+    baseProfile: {}
 })
 
 export default function lobbyReducer(state = INITIAL_STATE, action = {}) {
     switch (action.type) {
 
-        case GET_PROFILE:
-            return state.update('profile', () => action.payload)
+        case SET_PROFILE:
+            return state.update('baseProfile', () => action.payload)
 
         default:
             return state

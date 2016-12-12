@@ -1,47 +1,66 @@
 import React, { Component, PropTypes } from 'react'
-import { browserHistory } from 'react-router'
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import { getProfile } from '../actions'
+import axios from 'axios'
+import { setProfile } from '../actions'
 
 function mapStateToProps(state) {
     return {
-        profile: state.profile.get('profile')
+        profile: state.profile.get('baseProfile')
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getProfile: (token) => dispatch(getProfile(token))
+        setProfile: (profile) => dispatch(setProfile(profile))
     }
 }
 
 class Profile extends Component {
     static propTypes = {
         profile: PropTypes.object,
-        getProfile: PropTypes.func,
+        setProfile: PropTypes.func,
     }
 
-    // 1. Does it have a token?
-    //     yes: Call API and return Profile
-    //     no: go to step 2
-
-    // 2. Are they already logged in?
-    //     yes: Show the Profile
-    //     no: Teeeeeell thm off
-
     componentDidMount() {
-        if (this.props.location.query.token) {
-            const token = this.props.location.query.token
-            this.props.getProfile(token)
-                .then(() => console.log('done'))
-        } else {
-            console.log('No Token')
+        if (!window.sessionStorage.profile) {
+            if (this.props.location.query.token) {
+                const token = this.props.location.query.token
+                const urlRoot = 'https://yoshi-chat.herokuapp.com/api/profile'
+
+                axios.get(`${urlRoot}?token=${token}`)
+                    .then((res) => {
+                        console.log(res)
+                        const profile = res.userProfile
+                        const encodedProfile = btoa(JSON.stringify(profile))
+
+                        this.props.setProfile(profile)
+                        window.sessionStorage.setItem('profile', encodedProfile)
+                    })
+                    .catch((err) => {
+                        console.warn('ERROR', err)
+                    })
+            }
         }
+
+         this.props.setProfile({name: 'the guy'})
     }
 
     render() {
+        const isLoggedIn = window.sessionStorage.profile
         return (
-            <h2>Loggin you in</h2>
+            <div>
+                { isLoggedIn &&
+                    <div>
+                        <h3>You have logged in</h3>
+                        <Link to="/">Go Home</Link>
+                    </div>
+                }
+
+                { !isLoggedIn && 
+                    <h3>Unable to login!</h3>
+                }
+            </div>
         )
     }
 }

@@ -4,7 +4,7 @@ import {
     ADD_HISTORY,
     ADD_USER,
     REMOVE_USER,
-    GET_PROFILE
+    SET_PROFILE
 } from '../constants'
 
 export function setCurrentUserID(userID) {
@@ -44,10 +44,9 @@ export function removeUser(userID) {
     }
 }
 
-export function getProfile(token) {
-    console.log('Get profile called with', token)
+export function setProfile(profile) {
     return {
-        type: GET_PROFILE,
-        payload: {name: 'Test Dude'}
+        type: SET_PROFILE,
+        payload: profile
     }
 }
