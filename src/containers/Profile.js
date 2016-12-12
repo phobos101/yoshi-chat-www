@@ -30,8 +30,7 @@ class Profile extends Component {
 
                 axios.get(`${urlRoot}?token=${token}`)
                     .then((res) => {
-                        console.log(res)
-                        const profile = res.userProfile
+                        const profile = res.data.userProfile
                         const encodedProfile = btoa(JSON.stringify(profile))
 
                         this.props.setProfile(profile)
