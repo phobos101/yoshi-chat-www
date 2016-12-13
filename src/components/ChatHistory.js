@@ -56,12 +56,13 @@ export default class ChatHistory extends Component {
 
             <ul className="collection message-list text-left" ref="messageList" onScroll={ onScroll }>
                 { props.history.map((messageObj) => {
+                    const imgURL = `//robohash.org/${messageObj.Who.id}?set=set2&bgset=bg2&size=70x70`
                     const messageDate = new Date(messageObj.When)
                     const messageDateTime = messageDate.toLocaleDateString() + ' at ' + messageDate.toLocaleTimeString()
 
                     return (
                         <li className="collection-item message-item avatar" key={ messageObj.When }>
-                            <img src={ messageObj.Who.image } alt="{ messageObj.Who.id }" className="circle" />
+                            <img src={ imgURL } alt="{ messageObj.Who.id }" className="circle" />
                             <span className="title">{ messageObj.Who.name }</span>
                             <p>
                                 <i className="prefix mdi-action-alarm" />

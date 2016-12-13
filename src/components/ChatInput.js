@@ -22,7 +22,6 @@ export default class ChatInput extends Component {
             Who: {
                 id: this.props.userID,
                 name: `${this.props.userProfile.givenNames} ${this.props.userProfile.familyName}`,
-                image: this.props.userProfile.selfie
             },
             What: message,
             When: new Date().valueOf()

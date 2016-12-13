@@ -18,7 +18,7 @@ export default class ChatUsers extends Component {
                 <ul>{
                     users.map((userID) => {
                         const name = userID;
-                        const imgURL = `//robohash.org/${userID}?set=set2&bgset=bg2&size=70x70`;
+                        const imgURL = `//robohash.org/${userID}?set=set2&bgset=bg2&size=70x70`
                         return (
                             <li key={ userID }>
                                 <img title={ name } alt={ name } src={ imgURL } className="circle" />
