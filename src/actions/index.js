@@ -4,7 +4,8 @@ import {
     ADD_HISTORY,
     ADD_USER,
     REMOVE_USER,
-    SET_PROFILE
+    SET_PROFILE,
+    SET_YOTI_USER
 } from '../constants'
 
 export function setCurrentUserID(userID) {
@@ -48,5 +49,12 @@ export function setProfile(profile) {
     return {
         type: SET_PROFILE,
         payload: profile
+    }
+}
+
+export function setYotiUser(yotiID) {
+    return {
+        type: SET_YOTI_USER,
+        payload: yotiID
     }
 }

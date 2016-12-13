@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {
-    setCurrentUserID,
     addMessage,
     addHistory,
     addUser,
@@ -16,49 +15,47 @@ import '../styles/room.css'
 
 function mapStateToProps(state) {
     return {
-        history: state.lobby.get('messages').toJS(),
-        userID: state.lobby.get('userID'),
-        lastMessageTimestamp: state.lobby.get('lastMessageTimestamp'),
-        users: state.lobby.get('users').toJS()
+        history: state.room.get('messages').toJS(),
+        lastMessageTimestamp: state.room.get('lastMessageTimestamp'),
+        users: state.room.get('users').toJS()
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         addMessage: (message) => dispatch(addMessage(message)),
-        setUserId: (userID) => dispatch(setCurrentUserID(userID)),
         addHistory: (messages, timestamp) => dispatch(addHistory(messages, timestamp)),
         addUser: (userID) => dispatch(addUser(userID)),
         removeUser: (userID) => dispatch(removeUser(userID))
     }
 }
 
-class Lobby extends Component {
+class Room extends Component {
     static propTypes = {
         history: PropTypes.array,
-        userID: PropTypes.number,
+        userId: PropTypes.number,
         addMessage: PropTypes.func,
-        setUserId: PropTypes.func,
         addHistory: PropTypes.func,
         lastMessageTimestamp: PropTypes.string,
         users: PropTypes.array,
         addUser: PropTypes.func,
-        removeUser: PropTypes.func
+        removeUser: PropTypes.func,
+        roomId: PropTypes.number
     }
 
     componentDidMount() {
-        const ID = Math.round(Math.random() * 1000000)
-        this.props.setUserId(ID)
+        console.log(this.props.userId)
+        console.log(this.props.roomId)
 
         this.PubNub = window.PUBNUB.init({
             publish_key: 'pub-c-033a1f9f-1a10-4a80-aa41-42e47f2dacbb',
             subscribe_key: 'sub-c-cef27eee-be48-11e6-91e2-02ee2ddab7fe',
             ssl: (window.location.protocol.toLowerCase().indexOf('https') !== -1),
-            uuid: ID
+            uuid: this.props.userID
         })
 
         this.PubNub.subscribe({
-            channel: 'Yoshi-lobby',
+            channel: `Yoshi-${this.props.roomId}`,
             message: this.props.addMessage,
             presence: this.onPresenceChange
         })
@@ -74,14 +71,14 @@ class Lobby extends Component {
 
     leaveChat = () => {
         this.PubNub.unsubscribe({
-            channel: 'Yoshi-lobby',
+            channel: `Yoshi-${this.props.roomId}`,
             presence: this.onPresenceChange
         })
     }
 
     sendMessage = (message) => {
         this.PubNub.publish({
-            channel: 'Yoshi-lobby',
+            channel: `Yoshi-${this.props.roomId}`,
             message: message
         })
     }
@@ -90,7 +87,7 @@ class Lobby extends Component {
         const { props } = this
 
         this.PubNub.history({
-            channel: 'Yoshi-lobby',
+            channel: `Yoshi-${this.props.roomId}`,
             count: 15,
             start: props.lastMessageTimestamp,
             callback: (data) => {
@@ -128,4 +125,4 @@ class Lobby extends Component {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Lobby)
+)(Room)

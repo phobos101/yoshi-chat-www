@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import { setProfile } from '../actions'
+import { setProfile, setYotiUser } from '../actions'
 
 function mapStateToProps(state) {
     return {
@@ -12,7 +12,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setProfile: (profile) => dispatch(setProfile(profile))
+        setProfile: (profile) => dispatch(setProfile(profile)),
+        setYotiUser: (ID) => dispatch(setYotiUser(ID))
     }
 }
 
@@ -20,6 +21,7 @@ class Profile extends Component {
     static propTypes = {
         profile: PropTypes.object,
         setProfile: PropTypes.func,
+        setYotiUser: PropTypes.func   
     }
 
     constructor() {
@@ -37,8 +39,10 @@ class Profile extends Component {
                     .then((res) => {
                         const profile = res.data.userProfile
                         const encodedProfile = btoa(JSON.stringify(profile))
+                        const yotiUserId = res.data.userId
 
                         this.props.setProfile(profile)
+                        this.props.setYotiUser(yotiUserId)
                         window.sessionStorage.setItem('profile', encodedProfile)
 
                         this.setState({ isLoggedIn: true })
@@ -64,8 +68,8 @@ class Profile extends Component {
 
                 { !this.state.isLoggedIn &&
                     <div>
-                        <h3>Unable to login!</h3>
-                        <Link to="/">Go Home</Link>
+                        <h3>Logging you in...</h3>
+                        <Link to="/">If nothing happens, click me to go home.</Link>
                     </div>
                 }
             </div>
