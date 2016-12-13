@@ -9,7 +9,7 @@ class App extends Component {
             <div>
                 <div className="row m-xs-b-0">
 
-                    <div className="col 12 valign-wrapper intro-text">
+                    <div className="valign-wrapper intro-text">
                         <div className="col s12 valign center">
                             <h3>Yoshi Chat</h3>
 

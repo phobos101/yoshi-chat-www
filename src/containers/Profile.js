@@ -44,6 +44,7 @@ class Profile extends Component {
                         this.props.setProfile(profile)
                         this.props.setYotiUser(yotiUserId)
                         window.sessionStorage.setItem('profile', encodedProfile)
+                        window.sessionStorage.setItem('yotiId', yotiUserId)
 
                         this.setState({ isLoggedIn: true })
                     })
@@ -52,24 +53,11 @@ class Profile extends Component {
                     })
             }
         } else {
+            let decodedProfile = JSON.parse(atob(window.sessionStorage.profile))
+            this.props.setProfile(decodedProfile)
+            this.props.setYotiUser(window.sessionStorage.yotiId)
             this.setState({ isLoggedIn: true })
         }
-
-        // MOCK
-        // const profile = {
-        //     selfie: '12345',
-        //     givenNames: 'ROBERT ANTONY',
-        //     familyName: 'WILSON',
-        //     dateOfBirth: '1987-06-09',
-        //     gender: 'MALE',
-        //     nationality: 'GBR'
-        // }
-        // const yotiUserId = '123456789'
-
-        // this.setState({ isLoggedIn: true })
-        // this.props.setProfile(profile)
-        // this.props.setYotiUser(yotiUserId)
-        // END MOCK
     }
 
     render() {
