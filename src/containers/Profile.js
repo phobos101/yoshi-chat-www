@@ -30,45 +30,46 @@ class Profile extends Component {
     }
 
     componentDidMount() {
-        // if (!window.sessionStorage.profile) {
-        //     if (this.props.location.query.token) {
-        //         const token = this.props.location.query.token
-        //         const urlRoot = 'https://yoshi-chat.herokuapp.com/api/profile'
+        if (!window.sessionStorage.profile) {
+            if (this.props.location.query.token) {
+                const token = this.props.location.query.token
+                const urlRoot = 'https://yoshi-chat.herokuapp.com/api/profile'
 
-        //         axios.get(`${urlRoot}?token=${token}`)
-        //             .then((res) => {
-        //                 const profile = res.data.userProfile
-        //                 const encodedProfile = btoa(JSON.stringify(profile))
-        //                 const yotiUserId = res.data.userId
+                axios.get(`${urlRoot}?token=${token}`)
+                    .then((res) => {
+                        const profile = res.data.userProfile
+                        const encodedProfile = btoa(JSON.stringify(profile))
+                        const yotiUserId = res.data.userId
 
-        //                 this.props.setProfile(profile)
-        //                 this.props.setYotiUser(yotiUserId)
-        //                 window.sessionStorage.setItem('profile', encodedProfile)
+                        this.props.setProfile(profile)
+                        this.props.setYotiUser(yotiUserId)
+                        window.sessionStorage.setItem('profile', encodedProfile)
 
-        //                 this.setState({ isLoggedIn: true })
-        //             })
-        //             .catch((err) => {
-        //                 console.warn('ERROR', err)
-        //             })
-        //     }
-        // } else {
-        //     this.setState({ isLoggedIn: true })
-        // }
-
-        // GET RID OF ME!
-        const profile = {
-            selfie: '12345',
-            givenNames: 'ROBERT ANTONY',
-            familyName: 'WILSON',
-            dateOfBirth: '1987-06-09',
-            gender: 'MALE',
-            nationality: 'GBR'
+                        this.setState({ isLoggedIn: true })
+                    })
+                    .catch((err) => {
+                        console.warn('ERROR', err)
+                    })
+            }
+        } else {
+            this.setState({ isLoggedIn: true })
         }
-        const yotiUserId = '123456789'
 
-        this.setState({ isLoggedIn: true })
-        this.props.setProfile(profile)
-        this.props.setYotiUser(yotiUserId)
+        // MOCK
+        // const profile = {
+        //     selfie: '12345',
+        //     givenNames: 'ROBERT ANTONY',
+        //     familyName: 'WILSON',
+        //     dateOfBirth: '1987-06-09',
+        //     gender: 'MALE',
+        //     nationality: 'GBR'
+        // }
+        // const yotiUserId = '123456789'
+
+        // this.setState({ isLoggedIn: true })
+        // this.props.setProfile(profile)
+        // this.props.setYotiUser(yotiUserId)
+        // END MOCK
     }
 
     render() {
