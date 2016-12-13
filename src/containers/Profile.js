@@ -54,6 +54,21 @@ class Profile extends Component {
         } else {
             this.setState({ isLoggedIn: true })
         }
+
+        // GET RID OF ME!
+        // const profile = {
+        //     selfie: '12345',
+        //     givenNames: 'ROBERT ANTONY',
+        //     familyName: 'WILSON',
+        //     dateOfBirth: '1987-06-09',
+        //     gender: 'MALE',
+        //     nationality: 'GBR'
+        // }
+        // const yotiUserId = '123456789'
+
+        // this.setState({ isLoggedIn: true })
+        // this.props.setProfile(profile)
+        // this.props.setYotiUser(yotiUserId)
     }
 
     render() {

@@ -33,25 +33,23 @@ function mapDispatchToProps(dispatch) {
 class Room extends Component {
     static propTypes = {
         history: PropTypes.array,
-        userId: PropTypes.number,
-        addMessage: PropTypes.func,
-        addHistory: PropTypes.func,
         lastMessageTimestamp: PropTypes.string,
         users: PropTypes.array,
+        addMessage: PropTypes.func,
+        addHistory: PropTypes.func,
         addUser: PropTypes.func,
         removeUser: PropTypes.func,
-        roomId: PropTypes.number
+        userId: PropTypes.string,
+        roomId: PropTypes.string,
+        userProfile: PropTypes.object
     }
 
     componentDidMount() {
-        console.log(this.props.userId)
-        console.log(this.props.roomId)
-
         this.PubNub = window.PUBNUB.init({
             publish_key: 'pub-c-033a1f9f-1a10-4a80-aa41-42e47f2dacbb',
             subscribe_key: 'sub-c-cef27eee-be48-11e6-91e2-02ee2ddab7fe',
             ssl: (window.location.protocol.toLowerCase().indexOf('https') !== -1),
-            uuid: this.props.userID
+            uuid: this.props.userId
         })
 
         this.PubNub.subscribe({
@@ -63,6 +61,13 @@ class Room extends Component {
         this.fetchHistory()
 
         window.addEventListener('beforeunload', this.leaveChat)
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.roomId !== this.props.roomId) {
+            this.forceUpdate()
+        }
+        
     }
 
     componentWillUnmount() {
@@ -99,11 +104,11 @@ class Room extends Component {
     onPresenceChange = (presenceData) => {
         switch (presenceData.action) {
             case 'join':
-                this.props.addUser(presenceData.uuid)
+                this.props.addUser(this.props.userId)
                 break
             case 'leave':
             case 'timeout':
-                this.props.removeUser(presenceData.uuid)
+                this.props.removeUser(this.props.userId)
                 break
             default:
                 console.error(`Unknown action: ${presenceData.action}`)
@@ -116,7 +121,7 @@ class Room extends Component {
             <div className="room-container">
                 <ChatUsers users={ props.users } />
                 <ChatHistory history={ props.history } fetchHistory={ fetchHistory } />
-                <ChatInput userID={ props.userID } sendMessage={ sendMessage } />
+                <ChatInput userID={ props.userId } userProfile={ props.userProfile } sendMessage={ sendMessage } />
             </div>
         )
     }

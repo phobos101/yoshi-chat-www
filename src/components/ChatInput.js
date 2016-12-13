@@ -3,7 +3,8 @@ import '../styles/ChatInput.css'
 
 export default class ChatInput extends Component {
     static propTypes = {
-        userID: PropTypes.number,
+        userID: PropTypes.string,
+        userProfile: PropTypes.object,
         sendMessage: PropTypes.func
     }
 
@@ -18,7 +19,11 @@ export default class ChatInput extends Component {
         if (message.length === 0) return
 
         const messageObj = {
-            Who: this.props.userID,
+            Who: {
+                id: this.props.userID,
+                name: `${this.props.userProfile.givenNames} ${this.props.userProfile.familyName}`,
+                image: this.props.userProfile.selfie
+            },
             What: message,
             When: new Date().valueOf()
         }
@@ -31,7 +36,6 @@ export default class ChatInput extends Component {
 
     render() {
         const { props, onSubmit } = this
-        const imgURL = `//robohash.org/${props.userID}?set=set2&bgset=bg2&size=70x70`
         return (
             <footer className="message-form">
                 <form className="container" onSubmit={ onSubmit }>
@@ -40,8 +44,8 @@ export default class ChatInput extends Component {
                             <i className="prefix mdi-communication-chat" />
                             <input ref="txtMessage" type="text" placeholder="Type your message" />
                             <span className="chip left">
-                                <img src={ imgURL } role="presentation"/>
-                                <span>Anonymous #{ props.userID }</span>
+                                <img src={ this.props.userProfile.selfie } role="presentation"/>
+                                <span>{ `${props.userProfile.givenNames} ${props.userProfile.familyName}` }</span>
                             </span>
                         </div>
                         <div className="input-field col s2">

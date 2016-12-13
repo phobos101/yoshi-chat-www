@@ -1,19 +1,12 @@
 import {
     ADD_MESSAGE,
-    SET_CURRENT_USERID,
     ADD_HISTORY,
     ADD_USER,
     REMOVE_USER,
     SET_PROFILE,
-    SET_YOTI_USER
+    SET_YOTI_USER,
+    SET_ROOM
 } from '../constants'
-
-export function setCurrentUserID(userID) {
-    return {
-        type: SET_CURRENT_USERID,
-        payload: userID
-    }
-}
 
 export function addMessage(message) {
     return {
@@ -56,5 +49,12 @@ export function setYotiUser(yotiID) {
     return {
         type: SET_YOTI_USER,
         payload: yotiID
+    }
+}
+
+export function setRoom(roomID) {
+    return {
+        type: SET_ROOM,
+        payload: roomID
     }
 }

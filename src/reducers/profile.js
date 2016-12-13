@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 
 const INITIAL_STATE = fromJS({
     baseProfile: {},
-    userId: 0
+    userId: ''
 })
 
 export default function lobbyReducer(state = INITIAL_STATE, action = {}) {
@@ -13,7 +13,7 @@ export default function lobbyReducer(state = INITIAL_STATE, action = {}) {
             return state.update('baseProfile', () => action.payload)
 
         case SET_YOTI_USER:
-            return state.updtae('userId', () => action.payload)
+            return state.update('userId', () => action.payload)
 
         default:
             return state

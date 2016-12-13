@@ -17,10 +17,10 @@ export default class ChatUsers extends Component {
                 </div>
                 <ul>{
                     users.map((userID) => {
-                        const name = `Anonymous #${userID}`;
+                        const name = userID;
                         const imgURL = `//robohash.org/${userID}?set=set2&bgset=bg2&size=70x70`;
                         return (
-                            <li key={userID }>
+                            <li key={ userID }>
                                 <img title={ name } alt={ name } src={ imgURL } className="circle" />
                             </li>
                         )
