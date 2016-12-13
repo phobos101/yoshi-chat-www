@@ -22,8 +22,12 @@ class Profile extends Component {
         setProfile: PropTypes.func,
     }
 
+    constructor() {
+        super()
+        this.state = { isLoggedIn: false }
+    }
+
     componentDidMount() {
-        this.isLoggedIn = false
         if (!window.sessionStorage.profile) {
             if (this.props.location.query.token) {
                 const token = this.props.location.query.token
@@ -37,29 +41,28 @@ class Profile extends Component {
                         this.props.setProfile(profile)
                         window.sessionStorage.setItem('profile', encodedProfile)
 
-                        this.isLoggedIn = true
-
+                        this.setState({ isLoggedIn: true })
                     })
                     .catch((err) => {
                         console.warn('ERROR', err)
                     })
             }
         } else {
-            this.isLoggedIn = true
+            this.setState({ isLoggedIn: true })
         }
     }
 
     render() {
         return (
             <div>
-                { this.isLoggedIn &&
+                { this.state.isLoggedIn &&
                     <div>
                         <h3>You have logged in</h3>
                         <Link to="/dashboard">Continue...</Link>
                     </div>
                 }
 
-                { !this.isLoggedIn &&
+                { !this.state.isLoggedIn &&
                     <div>
                         <h3>Unable to login!</h3>
                         <Link to="/">Go Home</Link>
